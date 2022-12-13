@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.z</groupId>
+    <artifactId>zwork-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <url>https://github.com/zorglube/zwork</url>
+
+    <name>Z Work Parent</name>
+
+    <organization>
+        <name>Z Org</name>
+        <url>https://github.com/zorglube</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/zorglube/zwork/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Zorglube</name>
+            <email></email>
+            <url>https://github.com/zorglube</url>
+            <roles>
+                <role>maintainer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/zorglube/zwork.git</connection>
+        <developerConnection>scm:git:https://github.com/zorglube/zwork.git</developerConnection>
+        <url>https://github.com/zorglube/zwork.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/zorglube/zwork/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>cacib-lscsad-maven-scratch-intranet</id>
+            <name>cacib-lscsad-maven-scratch-intranet</name>
+            <url>https://registry.saas.cagip.group.gca:443/artifactory/cacib-lscsad-maven-scratch-intranet/</url>
+        </snapshotRepository>
+        <repository>
+            <id>cacib-lscsad-maven-scratch-intranet</id>
+            <name>cacib-lscsad-maven-scratch-intranet</name>
+            <url>https://registry.saas.cagip.group.gca:443/artifactory/cacib-lscsad-maven-scratch-intranet/</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <m2e.apt.activation>jdt_apt</m2e.apt.activation>
+    </properties>
+
+    <modules>
+    	<module>logback-spring-module</module>
+    	<module>utils</module>
+    	<module>logstash-logback-encodeur-spring-module</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.7.6</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.z</groupId>
+                <artifactId>utils</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>7.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <scmCommentPrefix>[skip ci] [maven-release-plugin]</scmCommentPrefix>
+                    <username>${SVC_ACCOUNT_USER}</username>
+                    <password>${SVC_ACCOUNT_PASSWORD}</password>
+                    <detail>true</detail>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>(3.8.4,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>(11,)</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0.0-M7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.10.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>9.3</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>verify-style</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <checkstyleRules>
+                            <module name="Checker">
+                                <!-- Checks for whitespace -->
+                                <!-- See http://checkstyle.sf.net/config_whitespace.html -->
+                                <module name="FileTabCharacter" />
+                                <module name="TreeWalker">
+                                    <module name="IllegalImport">
+                                        <property name="illegalPkgs" value="lombok.experimental" />
+                                        <property name="illegalClasses" value="lombok.Data" />
+                                    </module>
+                                    <module name="UnusedImports">
+                                        <property name="severity" value="error" />
+                                    </module>
+                                    <module name="StaticVariableName" />
+                                    <module name="TypeName">
+                                        <property name="format" value="^_?[A-Z][a-zA-Z0-9]*$" />
+                                    </module>
+                                    <module name="AvoidEscapedUnicodeCharacters">
+                                        <property name="allowEscapesForControlCharacters" value="true" />
+                                        <property name="allowByTailComment" value="true" />
+                                        <property name="allowNonPrintableEscapes" value="true" />
+                                    </module>
+                                    <module name="NeedBraces">
+                                        <property name="severity" value="error" />
+                                    </module>
+                                    <module name="OneStatementPerLine">
+                                        <property name="severity" value="error" />
+                                    </module>
+                                </module>
+                            </module>
+                        </checkstyleRules>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
